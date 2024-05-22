@@ -1,4 +1,4 @@
 package com.myLibrary.repository;
 
-public class ReaderRepository {
+public interface ReaderRepository {
 }

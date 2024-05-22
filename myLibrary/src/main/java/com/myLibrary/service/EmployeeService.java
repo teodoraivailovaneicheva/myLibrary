@@ -1,4 +1,4 @@
 package com.myLibrary.service;
 
-public class EmployeeService {
+public interface EmployeeService {
 }

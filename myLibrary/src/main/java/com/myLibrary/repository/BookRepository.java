@@ -1,4 +1,6 @@
 package com.myLibrary.repository;
 
-public class BookRepository {
+//@Repository
+public interface BookRepository {
+
 }

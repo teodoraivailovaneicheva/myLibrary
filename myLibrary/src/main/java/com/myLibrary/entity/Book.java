@@ -1,58 +1,73 @@
 package com.myLibrary.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.*;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.StringJoiner;
 
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@Entity
-@Table(name = "BOOKS")
 public class Book {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, name = "ID")
-    private Long id;
+    private int id;
 
-    @Column(nullable = false, name = "BOOK_AUTHOR")
-    @NonNull
-    @NotBlank
-    @Size(min = 2, max =40, message = "Book author's name must be from 2 to 30 letters length")
-    @OneToOne(mappedBy = "Book title", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonManagedReference
     private String bookAuthor;
 
-    @Column(nullable = false, name = "BOOK_TITLE")
-    @NonNull
-    @NotBlank
-    @Size(min = 2, max = 40, message = "Book title's name must be from 2 to 40 letters length")
-    //@OneToOne(mappedBy = "Book author", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    //@JsonManagedReference
     private String bookTitle;
 
-    @Column(nullable = false, name = "BOOK_PUBLISHER")
-    @NonNull
-    @NotBlank
-    @Size(min = 2, max =40, message = "Book publisher's name must be from 2 to 30 letters length")
-    //@OneToMany(mappedBy = "Book title", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    //@JsonManagedReference
     private String bookPublisher;
 
-    @Column(nullable = false, name = "BOOK_PAGES")
-    @NonNull
-    @NotBlank
-    @Size(min = 2, max = 5)
-    @Digits(integer=2, fraction=0, message="Pages must be at least 2 digits")
     private int pages;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public @NotNull @NotBlank @Size(min = 2, max = 40, message = "Book author's name must be from 2 to 30 letters length")
+            String getBookAuthor() {
+                 return bookAuthor;
+    }
+
+    public void setBookAuthor(@NotNull @NotBlank @Size(min = 2, max = 40, message = "Book author's name must be from 2 to 30 letters length")
+           String bookAuthor) {
+                 this.bookAuthor = bookAuthor;
+    }
+
+    public @NotNull @NotBlank @Size(min = 2, max = 40, message = "Book title's name must be from 2 to 40 letters length")
+           String getBookTitle() {
+                 return bookTitle;
+    }
+
+    public void setBookTitle(@NotNull @NotBlank @Size(min = 2, max = 40, message = "Book title's name must be from 2 to 40 letters length")
+           String bookTitle) {
+                 this.bookTitle = bookTitle;
+    }
+
+    public @NotNull @NotBlank @Size(min = 2, max = 40, message = "Book publisher's name must be from 2 to 30 letters length")
+           String getBookPublisher() {
+                return bookPublisher;
+    }
+
+    public void setBookPublisher(@NotNull @NotBlank @Size(min = 2, max = 40, message = "Book publisher's name must be from 2 to 30 letters length")
+           String bookPublisher) {
+                this.bookPublisher = bookPublisher;
+    }
+
+    @NotNull @NotBlank @Size(min = 2, max = 5) @Digits(integer = 2, fraction = 0, message = "Pages must be at least 2 digits")
+    public int getPages() {
+           return pages;
+    }
+
+    public void setPages(@NotNull @NotBlank @Size(min = 2, max = 5) @Digits(integer = 2, fraction = 0, message = "Pages must be at least 2 digits") int pages) {
+          this.pages = pages;
+    }
 
     @Override
     public String toString(){
@@ -65,4 +80,5 @@ public class Book {
                 .toString();
 
     }
+
 }
