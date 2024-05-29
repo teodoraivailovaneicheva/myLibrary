@@ -3,16 +3,19 @@ package com.myLibrary.service;
 import com.myLibrary.entity.Book;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BookService {
 
     Book create(Book book);
 
-    Book findBookById(int id);
+    Optional<Book> readById(int id);
+
+    Book findById(int id);
 
     List<Book> findAllBooks();
 
-    boolean updateBookById(Book book, int id);
+    Optional<Book> updateBookById(Book book, int id);
 
     boolean deleteBookById(int id);
 }

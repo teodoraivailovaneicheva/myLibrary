@@ -6,14 +6,15 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@Validated
+@RequestMapping("/books")
 public class BookController {
+
     private final BookService bookService;
 
     @Autowired
@@ -21,39 +22,45 @@ public class BookController {
         this.bookService = bookservice;
     }
 
-    @PostMapping(value = "/books")
-    public ResponseEntity<?> create(@RequestBody @Valid Book book){
+    @PostMapping
+    public ResponseEntity<Book> create(@RequestBody @Valid Book book){
 
-        bookService.create(book);
-        return new ResponseEntity<>(book, HttpStatus.CREATED);
+        Book createdBook = bookService.create(book);
+        return ResponseEntity.ok(createdBook);
     }
 
-    @GetMapping(value = "/books")
-    public ResponseEntity<List<Book>> read(){
+    @GetMapping
+    public ResponseEntity<List<Book>> readAllBooks(){
 
-        final List<Book> books = bookService.findAllBooks();
-        return books != null && !books.isEmpty() ? new ResponseEntity<>(books, HttpStatus.OK) : new ResponseEntity<>(books, HttpStatus.NOT_FOUND);
+        List<Book> books = bookService.findAllBooks();
+        return ResponseEntity.ok(books);
     }
 
-    @GetMapping(value = "/books/{id}")
-    public ResponseEntity<Book> read(@PathVariable(name = "id") @Valid int id){
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<Book> readById(@PathVariable(name = "id") @Valid int id){
 
-        final Book book = bookService.findBookById(id);
-        return book != null ? new ResponseEntity<>(book, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        Optional<Book> bookOptional = bookService.readById(id);
+        return bookOptional.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PutMapping(value = "/books/{id}")
+    @PutMapping(value = "/{id}")
     public ResponseEntity<Book> update(@PathVariable(name = "id") int id, @RequestBody @Valid Book book){
 
-        final boolean updated = bookService.updateBookById(book, id);
-        return updated ? new ResponseEntity<>(book, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+        Optional<Book> bookOptional = bookService.updateBookById(book, id);
+        return bookOptional.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping(value = "/books/{id}")
-    public ResponseEntity<Book> delete(@PathVariable(name = "id") @Valid int id){
+    public ResponseEntity<String> delete(@PathVariable(name = "id") @Valid int id){
 
-        final boolean deleted = bookService.deleteBookById(id);
-        return deleted ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+        boolean deleted = bookService.deleteBookById(id);
+        if(deleted){
+            return ResponseEntity.ok("Book with id " + id + "has been deleted successfully");
+        }else{
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete book with id" + id);
+        }
     }
 }
 

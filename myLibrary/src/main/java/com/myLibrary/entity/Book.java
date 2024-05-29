@@ -1,8 +1,5 @@
 package com.myLibrary.entity;
 
-import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -14,12 +11,16 @@ public class Book {
 
     private int id;
 
+    @Size(min=2, max=50)
     private String bookAuthor;
 
+    @Size(min=2, max=50)
     private String bookTitle;
 
+    @Size(min=2, max=50)
     private String bookPublisher;
 
+    @Size(min=2, max=4)
     private int pages;
 
     public int getId() {
@@ -30,43 +31,37 @@ public class Book {
         this.id = id;
     }
 
-    public @NotNull @NotBlank @Size(min = 2, max = 40, message = "Book author's name must be from 2 to 30 letters length")
-            String getBookAuthor() {
-                 return bookAuthor;
+    public @Size(min = 2, max = 50) String getBookAuthor() {
+        return bookAuthor;
     }
 
-    public void setBookAuthor(@NotNull @NotBlank @Size(min = 2, max = 40, message = "Book author's name must be from 2 to 30 letters length")
-           String bookAuthor) {
-                 this.bookAuthor = bookAuthor;
+    public void setBookAuthor(@Size(min = 2, max = 50) String bookAuthor) {
+        this.bookAuthor = bookAuthor;
     }
 
-    public @NotNull @NotBlank @Size(min = 2, max = 40, message = "Book title's name must be from 2 to 40 letters length")
-           String getBookTitle() {
-                 return bookTitle;
+    public @Size(min = 2, max = 50) String getBookTitle() {
+        return bookTitle;
     }
 
-    public void setBookTitle(@NotNull @NotBlank @Size(min = 2, max = 40, message = "Book title's name must be from 2 to 40 letters length")
-           String bookTitle) {
-                 this.bookTitle = bookTitle;
+    public void setBookTitle(@Size(min = 2, max = 50) String bookTitle) {
+        this.bookTitle = bookTitle;
     }
 
-    public @NotNull @NotBlank @Size(min = 2, max = 40, message = "Book publisher's name must be from 2 to 30 letters length")
-           String getBookPublisher() {
-                return bookPublisher;
+    public @Size(min = 2, max = 50) String getBookPublisher() {
+        return bookPublisher;
     }
 
-    public void setBookPublisher(@NotNull @NotBlank @Size(min = 2, max = 40, message = "Book publisher's name must be from 2 to 30 letters length")
-           String bookPublisher) {
-                this.bookPublisher = bookPublisher;
+    public void setBookPublisher(@Size(min = 2, max = 50) String bookPublisher) {
+        this.bookPublisher = bookPublisher;
     }
 
-    @NotNull @NotBlank @Size(min = 2, max = 5) @Digits(integer = 2, fraction = 0, message = "Pages must be at least 2 digits")
+    @Size(min = 2, max = 4)
     public int getPages() {
-           return pages;
+        return pages;
     }
 
-    public void setPages(@NotNull @NotBlank @Size(min = 2, max = 5) @Digits(integer = 2, fraction = 0, message = "Pages must be at least 2 digits") int pages) {
-          this.pages = pages;
+    public void setPages(@Size(min = 2, max = 4) int pages) {
+        this.pages = pages;
     }
 
     @Override
@@ -78,7 +73,5 @@ public class Book {
                 .add("book publisher '" + bookPublisher + "'")
                 .add("pages '" + pages + "'")
                 .toString();
-
     }
-
 }
