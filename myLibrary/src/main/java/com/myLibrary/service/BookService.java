@@ -17,5 +17,7 @@ public interface BookService {
 
     Optional<Book> updateBookById(Book book, int id);
 
-    boolean deleteBookById(int id);
+    Optional<Book> updateBookField(int id, String publisher);
+
+    Optional<Book> deleteBookById(int id);
 }

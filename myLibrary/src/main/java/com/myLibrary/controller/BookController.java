@@ -53,14 +53,19 @@ public class BookController {
     }
 
     @DeleteMapping(value = "/books/{id}")
-    public ResponseEntity<String> delete(@PathVariable(name = "id") @Valid int id){
+    public ResponseEntity<Book> delete(@PathVariable(name = "id") @Valid int id){
 
-        boolean deleted = bookService.deleteBookById(id);
-        if(deleted){
-            return ResponseEntity.ok("Book with id " + id + "has been deleted successfully");
-        }else{
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete book with id" + id);
-        }
+        Optional<Book> deletedBookOptional = bookService.deleteBookById(id);
+        return deletedBookOptional.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PatchMapping(value = "/{id}")
+    public ResponseEntity<Book> updateBookField(@PathVariable(name = "id") int id, @RequestBody Book book){
+
+        Optional<Book> updatedBookOptional = bookService.updateBookField(id, book.getBookPublisher());
+        return updatedBookOptional.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
 
